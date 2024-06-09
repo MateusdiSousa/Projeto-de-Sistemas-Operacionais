@@ -1,20 +1,12 @@
 import { useState } from "react";
-import { MdDelete } from "react-icons/md";
 import { CATEGORIA } from "../../enums/categoria";
 import { TextField } from "../../components/text-field";
 import { NumberField } from "../../components/number-field";
 import { SelectionBox } from "../../components/selection-box";
-
-
-interface Usuario {
-    login: string;
-    email: string;
-    departamento: string;
-    permissao: Number;
-    senha: string;
-    status: 1;
-    admin: boolean;
-}
+import { InputFile } from "../../components/input-files";
+import { IProduto } from "../../interfaces/produto";
+import { api } from "../../variaveis/api";
+import { ConfirmationModal } from "../../components/modal-confirmation";
 
 export function CreateProduct() {
     const [nome, setNome] = useState<string>("")
@@ -27,7 +19,7 @@ export function CreateProduct() {
     const [local_estoque, setLocalEstoque] = useState<string>("")
     const [info_geral, setInfoGeral] = useState<string>("")
     const [files, setFiles] = useState<File[]>([])
-
+    const [modal, setModal] = useState<boolean>(false)
     const listaCategorias = Object.values(CATEGORIA)
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,37 +36,73 @@ export function CreateProduct() {
                     alert(`${f.name} não é uma imagem`)
                 }
             })
-
             setFiles(filteredFiles)
         }
     };
 
+    const salvarProduto = async () => {
+        if (categoria) {
+            const dataSend: IProduto = {
+                categoria: categoria,
+                descricao: descricao,
+                info_geral: info_geral,
+                local_estoque: info_geral,
+                min_quant_estoque: min_quant_estoque,
+                nome: nome,
+                quant_estoque: quant_estoque,
+                valor_compra: valor_compra,
+                valor_venda: valor_venda
+            }
+
+            console.log(dataSend)
+
+            try {
+                await api.post("produto", dataSend).then(async resp => {
+                    const data: IProduto = resp.data
+                    if (data.id) {
+                        salvarImagens(data.id)
+                    }
+                    setModal(true)
+                    setTimeout(() => setModal(false), 4000);
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
+    }
+
+    const salvarImagens = async (id: number) => {
+        files.forEach(file => {
+            const form = new FormData()
+            form.append("file", file)
+            try {
+                api.post(`/produto/imagem/${id}`, form).then(resp => {
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        })
+    }
+
     return (
         <>
-            <div className="flex items-start justify-center mt-4 font-mediu">
+            {modal && (
+                <ConfirmationModal mensagem="Produto criado com sucesso!" />
+            )}
+
+            <h1>Cadastro de Produto</h1>
+            <div className="flex items-start justify-center mt-4 font-medium space-x-5">
                 <div>
 
-                    <form className="space-y-4">
+                    <form className="space-y-4 justify-items-start">
 
                         <TextField nome="Nome:" setValor={setNome} valor={nome} />
                         <TextField nome="Descrição:" setValor={setDescricao} valor={descricao} />
                         <NumberField nome="Valor de Compra:" setValor={setValorCompra} valor={valor_compra} />
                         <NumberField nome="Valor de Venda:" setValor={setValorVenda} valor={valor_venda} />
-                        <NumberField nome="Valor de Venda:" setValor={setValorVenda} valor={valor_venda} />
-
-                        <label className="form-control w-full max-w-xs">
-                            <input multiple onChange={handleFileChange} type="file" className="file-input file-input-sm file-input-bordered w-full max-w-xs" />
-                            <div className="label">
-                                <span className="label-text-alt">Apenas png, jpg e svg</span>
-                            </div>
-                        </label>
-
-                        <ul>
-                            {files.map((file, index) => (
-                                <li key={index}>{file.name}</li>
-                            ))}
-                        </ul>
-
+                        <InputFile files={files} setFiles={handleFileChange} label="Apenas png, jpg e svg" />
                     </form>
 
                 </div>
@@ -84,7 +112,6 @@ export function CreateProduct() {
                     <form className="space-y-4">
                         <NumberField nome="Quantidade em estoque:" setValor={setQuantEstoque} valor={quant_estoque} />
                         <NumberField nome="Quantidade mínima de estoque:" setValor={setMinQuantEstoque} valor={min_quant_estoque} />
-
                         <TextField nome="Local do estoque:" setValor={setLocalEstoque} valor={local_estoque} />
                         <TextField nome="Detalhes adicionais:" setValor={setInfoGeral} valor={info_geral} />
                         <SelectionBox lista={listaCategorias} nome="Categorias:" setValor={setCategoria} valor={categoria} />
@@ -93,7 +120,9 @@ export function CreateProduct() {
 
                 </div>
 
+
             </div>
+            <button onClick={salvarProduto} className="btn flex">Salvar</button>
         </>
     )
 }

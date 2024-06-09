@@ -17,7 +17,7 @@ export class UserService {
     newUser.login = user.login
     newUser.nome = user.nome
     newUser.setPassword(user.password)
-    return this.userRepository.create(newUser);
+    return this.userRepository.save(newUser);
   }
 
   async findAll(): Promise<UserEntity[]> {

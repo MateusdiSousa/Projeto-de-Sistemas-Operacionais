@@ -16,8 +16,8 @@ export class ItensService {
     private readonly imageRepository: Repository<ImagensEntity>
   ) { }
 
-  create(createItenDto: CreateItenDto) {
-    return this.itemRepository.create(createItenDto)
+  async create(createItenDto: CreateItenDto) {
+    return await this.itemRepository.save(createItenDto)
   }
 
   async findAll(): Promise<ItensEntity[]> {
@@ -60,7 +60,7 @@ export class ItensService {
         imagem.tamanho = file.size
         imagem.tipoImagem = file.mimetype
         imagem.itemId = item
-        imagem.url = `${req.protocol}://${req.get("host")}/itens/imagem/${item.id}/${imagem.nomeImagem}`
+        imagem.url = `${req.protocol}://${req.get("host")}/produto/imagem/${item.id}/${imagem.nomeImagem}`
 
         return await this.imageRepository.save(imagem)
       }

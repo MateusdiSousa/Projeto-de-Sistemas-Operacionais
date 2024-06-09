@@ -3,7 +3,7 @@ import { ImagensEntity } from "./imagens.entity";
 
 @Entity({name: "itens_venda"})
 export class ItensEntity {
-    @PrimaryGeneratedColumn('rowid')
+    @PrimaryGeneratedColumn('increment')
     id : number
     
     @Column()
@@ -33,7 +33,7 @@ export class ItensEntity {
     @Column()
     info_geral : string
 
-    @OneToMany(() => ImagensEntity, (image) => image.url, {cascade : true})
+    @OneToMany(() => ImagensEntity, (image) => image.url)
     image : ImagensEntity[]
 }
 

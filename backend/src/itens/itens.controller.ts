@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Req, StreamableFile, ImATeapotException, ParseFilePipe, ParseFilePipeBuilder, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Req, StreamableFile, ImATeapotException, ParseFilePipe, ParseFilePipeBuilder, HttpStatus, Put } from '@nestjs/common';
 import { ItensService } from './itens.service';
 import { CreateItenDto } from './dto/create-iten.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -8,13 +8,13 @@ import * as fs from 'fs'
 import { join } from 'path';
 
 
-@Controller('itens')
+@Controller('produto')
 export class ItensController {
   constructor(private readonly itensService: ItensService) { }
 
   @Post()
-  create(@Body() createItenDto: CreateItenDto) {
-    return this.itensService.create(createItenDto);
+  async create(@Body() createItenDto: CreateItenDto) {
+    return await this.itensService.create(createItenDto);
   }
 
   @Get()
@@ -27,9 +27,9 @@ export class ItensController {
     return this.itensService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateItenDto: CreateItenDto) {
-    return this.itensService.update(+id, updateItenDto);
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateItenDto: CreateItenDto) {
+    return this.itensService.update(id, updateItenDto);
   }
 
   @Delete(':id')
@@ -42,11 +42,11 @@ export class ItensController {
   addImage(
     @UploadedFile(
       new ParseFilePipeBuilder()
-      .addFileTypeValidator({
-        fileType : 'jpeg' || 'png' || 'svg'
-      }).build({
-        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-      }),
+        .addFileTypeValidator({
+          fileType: /jpeg|png|svg/,
+        }).build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+        }),
     ) file: Express.Multer.File,
     @Param('id') id: number,
     @Req() req: Request

@@ -4,7 +4,7 @@ import { ItensEntity } from "./itens.entity";
 @Entity("Imagens")
 export class ImagensEntity{
 
-    @PrimaryGeneratedColumn("rowid")
+    @PrimaryGeneratedColumn("increment")
     id : number
 
     @Column()
@@ -19,6 +19,6 @@ export class ImagensEntity{
     @Column()
     url : string
 
-    @ManyToOne(() => ItensEntity, (item) => item.image)
+    @ManyToOne(() => ItensEntity, (item) => item.image, {onDelete : 'CASCADE'})
     itemId : ItensEntity
 }
