@@ -8,7 +8,6 @@ interface SelectionBoxProps {
 export function SelectionBox(props: SelectionBoxProps) {
     return (
         <div className="flex space-x-3">
-            <label>{props.nome}</label>
             <select id='categoria-selected' value={props.valor} onChange={(e) => props.setValor(e.target.value)} className="select select-bordered w-full max-w-xs">
                 <option disabled selected>{props.nome}</option>
                 {props.lista.map((item) => {

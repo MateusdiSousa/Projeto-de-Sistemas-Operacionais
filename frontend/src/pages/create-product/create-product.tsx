@@ -115,7 +115,6 @@ export function CreateProduct() {
                         <TextField nome="Local do estoque:" setValor={setLocalEstoque} valor={local_estoque} />
                         <TextField nome="Detalhes adicionais:" setValor={setInfoGeral} valor={info_geral} />
                         <SelectionBox lista={listaCategorias} nome="Categorias:" setValor={setCategoria} valor={categoria} />
-
                     </form>
 
                 </div>
