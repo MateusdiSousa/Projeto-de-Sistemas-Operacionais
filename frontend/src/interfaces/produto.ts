@@ -11,4 +11,5 @@ export interface IProduto{
     categoria : CATEGORIA
     local_estoque : string
     info_geral : string
+    url ?: string 
 }

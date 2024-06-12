@@ -20,8 +20,16 @@ export class ItensService {
     return await this.itemRepository.save(createItenDto)
   }
 
-  async findAll(): Promise<ItensEntity[]> {
-    return await this.itemRepository.find();
+  async findAll() {
+    const query: string = `SELECT iv.id, iv.nome, iv.descricao, iv.valor_compra,
+	  iv.valor_venda, iv.categoria, iv.quant_estoque, iv.local_estoque, iv.info_geral,
+	  iv.min_quant_estoque, im.url
+    FROM itens_venda iv 
+    LEFT JOIN Imagens im ON im.id = (
+	  SELECT MIN(id)
+	  FROM Imagens
+	  WHERE itemIdId = iv.id);`
+    return await this.itemRepository.query(query);
   }
 
   async findOne(id: number): Promise<ItensEntity> {
@@ -52,7 +60,7 @@ export class ItensService {
 
   async addImagem(req: Request, id: number, file: Express.Multer.File) {
     try {
-      const item : ItensEntity = await this.findOne(id)
+      const item: ItensEntity = await this.findOne(id)
 
       if (item) {
         const imagem: ImagensEntity = new ImagensEntity()
@@ -69,10 +77,10 @@ export class ItensService {
     }
   }
 
-  async getImagens( id : number){
+  async getImagens(id: number) {
     try {
-      const item : ItensEntity = await this.findOne(id)
-      return await this.imageRepository.findBy({itemId : item})
+      const item: ItensEntity = await this.findOne(id)
+      return await this.imageRepository.findBy({ itemId: item })
     } catch (error) {
       return error
     }

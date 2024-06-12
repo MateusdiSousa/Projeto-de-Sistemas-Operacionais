@@ -9,7 +9,7 @@ export class ItensEntity {
     @Column()
     nome : string
 
-    @Column()
+    @Column({type : 'longtext'})
     descricao : string
 
     @Column()

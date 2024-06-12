@@ -15,7 +15,7 @@ export function CreateProduct() {
     const [valor_venda, setValorVenda] = useState<number>(0)
     const [quant_estoque, setQuantEstoque] = useState<number>(0)
     const [min_quant_estoque, setMinQuantEstoque] = useState<number>(0)
-    const [categoria, setCategoria] = useState<CATEGORIA>()
+    const [categoria, setCategoria] = useState<CATEGORIA | null>()
     const [local_estoque, setLocalEstoque] = useState<string>("")
     const [info_geral, setInfoGeral] = useState<string>("")
     const [files, setFiles] = useState<File[]>([])
@@ -64,6 +64,15 @@ export function CreateProduct() {
                     }
                     setModal(true)
                     setTimeout(() => setModal(false), 4000);
+                    setNome('')
+                    setDescricao('')
+                    setValorCompra(0)
+                    setValorVenda(0)
+                    setQuantEstoque(0)
+                    setMinQuantEstoque(0)
+                    setLocalEstoque('')
+                    setInfoGeral('')
+                    setCategoria(null)
                 })
 
             } catch (error) {
@@ -121,7 +130,9 @@ export function CreateProduct() {
 
 
             </div>
-            <button onClick={salvarProduto} className="btn flex">Salvar</button>
+            <div className="items-center">
+                <button onClick={salvarProduto} className="btn w-32">Salvar</button>
+            </div>
         </>
     )
 }
