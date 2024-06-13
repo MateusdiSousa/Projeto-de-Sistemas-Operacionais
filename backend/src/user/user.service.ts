@@ -1,4 +1,4 @@
-import { HttpCode, Inject, Injectable } from '@nestjs/common';
+import { HttpCode, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -28,6 +28,10 @@ export class UserService {
     return await this.userRepository.findOneBy({id : id});
   }
 
+  async findOneByLogin(login : string) : Promise<UserEntity | undefined>{
+    return await this.userRepository.findOneBy({login : login})
+  }
+
   async update(id: number, user: CreateUserDto) {
     const actualUser : UserEntity = await this.findOne(id);
     actualUser.level = user.level
@@ -35,7 +39,6 @@ export class UserService {
     actualUser.nome = user.nome
     actualUser.setPassword(user.password)
     return await this.userRepository.save(actualUser)
-
   }
 
   async remove(id: number) {
@@ -45,4 +48,6 @@ export class UserService {
     }
     return HttpCode(404)
   }
+
+
 }
