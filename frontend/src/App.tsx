@@ -1,16 +1,22 @@
 import './App.css'
 import { Navbar } from './components/navbar'
+import { AuthProvider } from './context/auth'
+import useAuth from './hooks/useAuth'
 import Rotas from './routes/routes'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 function App() {
+  const auth = useAuth()
+
   return (
-    <Router>
-      <Navbar />
-      <div className='p-16'>
-        <Rotas />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <div className='p-16'>
+          <Rotas />
+        </div>
+      </Router>
+    </AuthProvider>
   )
 }
 

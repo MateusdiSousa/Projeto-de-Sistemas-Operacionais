@@ -4,7 +4,7 @@ import { IUser } from "../../interfaces/usuario";
 import { LEVEL } from "../../enums/level";
 import { PasswordField } from "../../components/password-field";
 import { SelectionBox } from "../../components/selection-box";
-import { api } from "../../variaveis/api";
+import  api  from "../../services/api";
 import { ConfirmationModal } from "../../components/modal-confirmation";
 
 export function CreateUser() {

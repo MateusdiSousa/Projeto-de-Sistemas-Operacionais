@@ -6,7 +6,7 @@ import { SelectionBox } from "../../components/selection-box";
 import { TextField } from "../../components/text-field";
 import { CATEGORIA } from "../../enums/categoria";
 import { IProduto } from "../../interfaces/produto";
-import { api } from "../../variaveis/api";
+import api from "../../services/api";
 import { useParams } from "react-router-dom";
 
 export function UpdateProduct() {
