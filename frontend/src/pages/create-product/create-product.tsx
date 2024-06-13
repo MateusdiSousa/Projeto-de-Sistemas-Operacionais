@@ -5,7 +5,7 @@ import { NumberField } from "../../components/number-field";
 import { SelectionBox } from "../../components/selection-box";
 import { InputFile } from "../../components/input-files";
 import { IProduto } from "../../interfaces/produto";
-import { api } from "../../variaveis/api";
+import api from "../../services/api";
 import { ConfirmationModal } from "../../components/modal-confirmation";
 
 export function CreateProduct() {

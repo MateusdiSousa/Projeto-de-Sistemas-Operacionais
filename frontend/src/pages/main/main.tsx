@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Carousel } from "../../components/carousel";
-import { api } from "../../variaveis/api";
+import  api from "../../services/api";
 import { IProduto } from "../../interfaces/produto";
 import { Card } from "../../components/card";
 import { FiltroProdutos } from "../../components/filtro-products";
