@@ -26,7 +26,7 @@ export function UpdateProduct() {
 
     useEffect(() => {
         api.get(`produto/${idProduct}`).then(async resp => {
-            const produto : IProduto = await resp.data
+            const produto: IProduto = await resp.data
             setNome(produto.nome)
             setDescricao(produto.descricao)
             setValorCompra(produto.valor_compra)
@@ -37,7 +37,7 @@ export function UpdateProduct() {
             setLocalEstoque(produto.local_estoque)
             setInfoGeral(produto.info_geral)
         })
-    },[])
+    }, [])
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -72,10 +72,7 @@ export function UpdateProduct() {
             }
 
             try {
-                await api.put(`produto/${idProduct}`, dataSend).then(async resp => {
-                    // if (data.id) {
-                    //     salvarImagens(data.id)
-                    // }
+                await api.put(`produto/${idProduct}`, dataSend).then(() => {
                     setModal(true)
                     setTimeout(() => setModal(false), 4000);
                 })

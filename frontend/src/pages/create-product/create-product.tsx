@@ -88,7 +88,7 @@ export function CreateProduct() {
         files.forEach(file => {
             const form = new FormData()
             form.append("file", file)
-            api.post(`/produto/imagem/${id}`, form).then(resp => {
+            api.post(`/produto/imagem/${id}`, form).then(() => {
                 setMensagem("Imagem salva com sucesso!")
                 setModal(true)
                 setTimeout(() => setModal(false), 4000);
@@ -103,11 +103,11 @@ export function CreateProduct() {
     return (
         <>
             {modal && (
-                <ConfirmationModal mensagem="Produto criado com sucesso!" />
+                <ConfirmationModal mensagem={mensagem} />
             )}
 
             {modalError && (
-                <ModalError mensagem="Erro ao criar o produto" />
+                <ModalError mensagem={mensagem} />
             )}
 
             <h1>Cadastro de Produto</h1>

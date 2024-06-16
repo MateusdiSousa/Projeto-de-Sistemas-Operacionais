@@ -1,9 +1,6 @@
-import { useNavigate } from "react-router-dom"
 import { IProduto } from "../interfaces/produto"
 
 export function Card(props: IProduto) {
-    const nav = useNavigate()
-
     const numeroFormatado: string = props.valor_venda.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 
     return (
