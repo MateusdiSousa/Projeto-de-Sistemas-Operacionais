@@ -27,5 +27,13 @@ export const authService = {
             return decode
         }
         return null
+    },
+
+    getRole(){
+        const role = this.decodificarToken(this.getToken());
+        if (role) {
+            return role?.role;
+        }
+        return null;
     }
 }

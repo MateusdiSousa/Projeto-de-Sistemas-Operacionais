@@ -87,19 +87,6 @@ export function UpdateProduct() {
         }
     }
 
-    // const salvarImagens = async (id: number) => {
-    //     files.forEach(file => {
-    //         const form = new FormData()
-    //         form.append("file", file)
-    //         try {
-    //             api.post(`/produto/imagem/${id}`, form).then(resp => {
-    //             })
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     })
-    // }
-
     return (
         <>
             {modal && (

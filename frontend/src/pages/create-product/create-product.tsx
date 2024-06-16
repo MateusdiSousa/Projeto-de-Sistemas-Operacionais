@@ -7,6 +7,7 @@ import { InputFile } from "../../components/input-files";
 import { IProduto } from "../../interfaces/produto";
 import api from "../../services/api";
 import { ConfirmationModal } from "../../components/modal-confirmation";
+import { ModalError } from "../../components/modal-error";
 
 export function CreateProduct() {
     const [nome, setNome] = useState<string>("")
@@ -20,9 +21,12 @@ export function CreateProduct() {
     const [info_geral, setInfoGeral] = useState<string>("")
     const [files, setFiles] = useState<File[]>([])
     const [modal, setModal] = useState<boolean>(false)
+    const [modalError, setModalError] = useState<boolean>(false)
     const listaCategorias = Object.values(CATEGORIA)
+    const [mensagem, setMensagem] = useState<string>("")
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const fileSelected: File[] = Array.from(event.target.files)
             const filteredFiles: File[] = []
@@ -54,30 +58,28 @@ export function CreateProduct() {
                 valor_venda: valor_venda
             }
 
-            console.log(dataSend)
-
-            try {
-                await api.post("produto", dataSend).then(async resp => {
-                    const data: IProduto = resp.data
-                    if (data.id) {
-                        salvarImagens(data.id)
-                    }
-                    setModal(true)
-                    setTimeout(() => setModal(false), 4000);
-                    setNome('')
-                    setDescricao('')
-                    setValorCompra(0)
-                    setValorVenda(0)
-                    setQuantEstoque(0)
-                    setMinQuantEstoque(0)
-                    setLocalEstoque('')
-                    setInfoGeral('')
-                    setCategoria(null)
-                })
-
-            } catch (error) {
-                console.log(error)
-            }
+            await api.post("produto", dataSend).then(async resp => {
+                const data: IProduto = resp.data
+                setMensagem("Produto criado com sucesso!")
+                setModal(true)
+                setTimeout(() => setModal(false), 4000);
+                setNome('')
+                setDescricao('')
+                setValorCompra(0)
+                setValorVenda(0)
+                setQuantEstoque(0)
+                setMinQuantEstoque(0)
+                setLocalEstoque('')
+                setInfoGeral('')
+                setCategoria(null)
+                if (data.id) {
+                    salvarImagens(data.id)
+                }
+            }).catch(() => {
+                setMensagem("Erro ao criar o produto")
+                setModalError(true);
+                setInterval(() => setModalError(false), 4000)
+            })
 
         }
     }
@@ -86,12 +88,15 @@ export function CreateProduct() {
         files.forEach(file => {
             const form = new FormData()
             form.append("file", file)
-            try {
-                api.post(`/produto/imagem/${id}`, form).then(resp => {
-                })
-            } catch (error) {
-                console.log(error)
-            }
+            api.post(`/produto/imagem/${id}`, form).then(resp => {
+                setMensagem("Imagem salva com sucesso!")
+                setModal(true)
+                setTimeout(() => setModal(false), 4000);
+            }).catch(() => {
+                setMensagem("Falha ao salvar imagem!")
+                setModalError(true);
+                setInterval(() => setModalError(false), 4000)
+            })
         })
     }
 
@@ -99,6 +104,10 @@ export function CreateProduct() {
         <>
             {modal && (
                 <ConfirmationModal mensagem="Produto criado com sucesso!" />
+            )}
+
+            {modalError && (
+                <ModalError mensagem="Erro ao criar o produto" />
             )}
 
             <h1>Cadastro de Produto</h1>
@@ -111,7 +120,7 @@ export function CreateProduct() {
                         <TextField nome="Descrição:" setValor={setDescricao} valor={descricao} />
                         <NumberField nome="Valor de Compra:" setValor={setValorCompra} valor={valor_compra} />
                         <NumberField nome="Valor de Venda:" setValor={setValorVenda} valor={valor_venda} />
-                        <InputFile files={files} setFiles={handleFileChange} label="Apenas png, jpg e svg" />
+                        <InputFile files={files} setFiles={handleFile} label="Apenas png, jpg e svg" />
                     </form>
 
                 </div>

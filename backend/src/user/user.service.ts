@@ -1,4 +1,4 @@
-import { HttpCode, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, HttpCode, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,6 +12,10 @@ export class UserService {
   ){}
 
   async create(user: CreateUserDto) {
+    const Existuser = await this.findOneByLogin(user.login)
+    if (Existuser) {
+      throw new ConflictException()
+    }
     const newUser : UserEntity = new UserEntity()
     newUser.level = user.level
     newUser.login = user.login

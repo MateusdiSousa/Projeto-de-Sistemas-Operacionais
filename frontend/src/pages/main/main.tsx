@@ -12,7 +12,6 @@ export function Main() {
 
     useEffect(() => {
         api.get("produto").then(resp => {
-            console.log(resp.data)
             setProdutos(resp.data)
             setProdutosFiltrados(resp.data)
         })

@@ -4,8 +4,9 @@ import { IUser } from "../../interfaces/usuario";
 import { LEVEL } from "../../enums/level";
 import { PasswordField } from "../../components/password-field";
 import { SelectionBox } from "../../components/selection-box";
-import  api  from "../../services/api";
+import api from "../../services/api";
 import { ConfirmationModal } from "../../components/modal-confirmation";
+import { ModalError } from "../../components/modal-error";
 
 export function CreateUser() {
     const [login, setLogin] = useState<string>("")
@@ -13,8 +14,9 @@ export function CreateUser() {
     const [senha, setSenha] = useState<string>("")
     const [level, setLevel] = useState<LEVEL>()
     const [modal, setModal] = useState<boolean>(false)
+    const [modalError, setModalError] = useState<boolean>(false)
 
-    const criarUsuario = (e : React.MouseEvent<HTMLButtonElement>) => {
+    const criarUsuario = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (level) {
             const usuario: IUser = {
@@ -23,9 +25,15 @@ export function CreateUser() {
                 nome: nome,
                 password: senha
             }
-            api.post("/user", usuario)
-            setModal(true)
-            setTimeout(() => setModal(false), 4000)
+
+            api.post("/user", usuario).then(() => {
+                setModal(true)
+                setTimeout(() => setModal(false), 4000)
+            }).catch( () => {
+                setModalError(true)
+                setTimeout(() => setModalError(false), 4000)
+            })
+
         }
     }
 
@@ -33,6 +41,9 @@ export function CreateUser() {
         <>
             {modal && (
                 <ConfirmationModal mensagem="Usuário criado com sucesso!" />
+            )}
+            {modalError && (
+                <ModalError mensagem="Usuário já existe!" />
             )}
             <h1>Criação de usuário</h1>
             <div className="flex items-start justify-center mt-4 font-medium space-x-5">

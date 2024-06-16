@@ -6,7 +6,6 @@ export function Card(props: IProduto) {
 
     const numeroFormatado: string = props.valor_venda.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 
-    console.log(numeroFormatado)
     return (
         <div className="card card-compact m-5 items-center w-96 bg-white shadow-xl">
             <figure><img src={props.url} alt="Shoes" /></figure>

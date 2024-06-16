@@ -4,7 +4,7 @@ import { ILogin } from "../interfaces/login";
 
 interface AuthContextType {
     token: string | null
-    role : string | null
+    role : string | null | undefined
     login: Function
     logout: Function
 }
@@ -13,7 +13,7 @@ export const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: any) {
     const [token, setToken] = useState<string | null>(authService.getToken())
-    const [role, setRole] = useState<string | null>(null)
+    const [role, setRole] = useState<string | null | undefined>(authService.getRole())
 
     const login = async (data: ILogin) => {
         await authService.autenticarUser(data).then(async resp => {

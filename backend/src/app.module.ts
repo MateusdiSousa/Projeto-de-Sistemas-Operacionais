@@ -1,9 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ItensModule } from './itens/itens.module';
 import { AuthModule } from './auth/auth.module';
+import { FillDatabaseModule } from './fill-database/fill-database.module';
+import { DataGuard } from './data.guard';
+import { FillDatabaseService } from './fill-database/fill-database.service';
 
 @Module({
   imports: [
@@ -21,9 +24,16 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     ItensModule,
     AuthModule,
+    FillDatabaseModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [DataGuard, FillDatabaseService],
   exports: []
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor( private readonly dataGuard : DataGuard){}
+
+   async onModuleInit() {
+       await this.dataGuard.canActivate(null)
+   }
+}
