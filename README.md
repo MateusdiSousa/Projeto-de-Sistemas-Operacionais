@@ -169,6 +169,8 @@ sudo nano /etc/apache2/sites-available/000-default.conf
 ```cmd
 cd Projeto-de-Sistemas-Operacionais/backend
 npm install
+npm install --save @nestjs/typeorm typeorm mysql2
+
 ```
 
 - depois você deve criar o arquivo .env: 
