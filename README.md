@@ -182,7 +182,7 @@ sudo nano .env
 ```cmd
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_USERNAME=root
+DB_USER=root
 DB_PASSWORD=sua-senha
 DB_DATABASE=senha-de-root
 TOKEN_JWT=coloque-qualquer-coisa
