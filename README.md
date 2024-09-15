@@ -146,6 +146,26 @@ export default api
 - Logo em seguida realize o build do frontend.
 ```cmd
 cd Projeto-de-Sistemas-Operacionais/frontend
+npm install
+nano node_modules/jwt-decode/build/esm/index.d.ts
+```
+Adicione o seguinte campo:
+
+```
+export interface JwtPayload {
+    iss?: string;
+    sub?: string;
+    aud?: string[] | string;
+    exp?: number;
+    nbf?: number;
+    iat?: number;
+    jti?: string;
+    role?: any;
+}
+
+```
+após isso realize o build
+```
 npm run build
 ```
 
@@ -186,7 +206,7 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=sua-senha
-DATABASE=senha-de-root
+DATABASE=nome-do-banco-de-dados
 TOKEN_JWT=coloque-qualquer-coisa
 ```
 
