@@ -143,7 +143,7 @@ const api = axios.create({baseURL : 'http://IPv4-público-da-instância:3000/'})
 
 export default api
 ```
-- Logo em seguida realize o build do frontend.
+- Logo em seguida instale as dependências do frontend.
 ```cmd
 cd Projeto-de-Sistemas-Operacionais/frontend
 npm install
