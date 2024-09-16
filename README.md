@@ -164,6 +164,11 @@ export interface JwtPayload {
 }
 
 ```
+Libere o módulo de reescrita
+```
+a2enmod rewrite
+```
+
 após isso realize o build
 ```
 npm run build
