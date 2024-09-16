@@ -177,7 +177,7 @@ npm run build
 - Após isso você deverá configurar o apache retornar a página do frontend
 
 ```cmd
-sudo mv Projeto-de-Sistemas-Operacionais /var/www/html/
+sudo mv Projeto-de-Sistemas-Operacionais/frontend/dist /var/www/
 sudo nano /etc/apache2/sites-available/000-default.conf
 ```
 - Edite o arquivo para que fique dessa forma:
