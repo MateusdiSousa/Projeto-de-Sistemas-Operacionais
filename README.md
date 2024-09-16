@@ -182,8 +182,25 @@ sudo nano /etc/apache2/sites-available/000-default.conf
 ```
 - Edite o arquivo para que fique dessa forma:
 ```cmd
-        ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/dist
+    <VirtualHost *:80>
+      ServerAdmin webmaster@localhost
+      DocumentRoot /var/www/html/seu-app-react/build
+
+      <Directory /var/www/dist>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+
+        # Ativando a reescrita
+        RewriteEngine On
+
+        # Se o arquivo solicitado não existir, redireciona para o index.html
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^ /index.html [L]
+    </Directory>
+  </VirtualHost>
+
 ```
 
 Logo após isso crie o arquivo .htaccess na pasta /var/www/dist
