@@ -182,12 +182,23 @@ sudo nano /etc/apache2/sites-available/000-default.conf
 ```
 - Edite o arquivo para que fique dessa forma:
 ```cmd
-<Directory "/var/www/html/Projeto-de-Sistemas-Operacionais/frontend/dist/">
-    AllowOverride All
-    Options FollowSymLinks
-    Require all granted
-</Directory>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/dist
 ```
+
+Logo após isso crie o arquivo .htaccess na pasta /var/www/dist
+```cmd
+    <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Se o arquivo solicitado não existir, redireciona para o index.html
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ /index.html [L]
+</IfModule>
+```
+
 ### 3.3 Backend
 - para rodar o backend do projeto, você deve usar os comandos: 
 
