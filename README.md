@@ -252,6 +252,9 @@ nest start
 ### 3.4 Load Balancer
 
 - Instale o nginx
+  ```cmd
+  sudo apt install nginx
+  ```
 - Crie um arquivo de configuração na pasta /etc/nginx/conf.d/loadbalancer.conf
 
 ```cmd
@@ -282,6 +285,11 @@ server {
             }
 }
 
-``` 
+```
+
+- reinicie o nginx com o seguinte comando:
+  ```cmd
+  systemctl restart ngnix.service
+  ```
 
 
