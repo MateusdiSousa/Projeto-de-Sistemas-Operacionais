@@ -249,4 +249,39 @@ TOKEN_JWT=coloque-qualquer-coisa
 nest start
 ```
 
+### 3.4 Load Balancer
+
+- Instale o nginx
+- Crie um arquivo de configuração na pasta /etc/nginx/conf.d/loadbalancer.conf
+
+```cmd
+upstream frontend{
+	server ip_publico1;
+	server ip_publico2;
+	server ip_publico3;
+}
+
+server {
+	listen 80;
+	
+
+	location / {
+		proxy_pass http://frontend;
+	        proxy_set_header Host $host;
+	        proxy_set_header X-Real-IP $remote_addr;
+	        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	        proxy_set_header X-Forwarded-Proto $scheme;
+	}
+
+	        location ~* \.(css|js|png|jpg|jpeg|gif|ico)$ {
+                proxy_pass http://frontend;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+            }
+}
+
+``` 
+
 
