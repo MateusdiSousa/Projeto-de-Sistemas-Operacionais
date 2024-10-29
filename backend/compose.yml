@@ -10,22 +10,21 @@ services:
     environment:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
-      DB_USER: ${DB_USER}
+      DB_USER: "root"
       DB_PASSWORD: ${DB_PASSWORD}
       DATABASE: ${DATABASE}
       TOKEN_JWT: ${TOKEN_JWT}
 
   mysql:
-    image: mysql:8  
+    image: mysql:8
     ports:
       - "5000:3306"
     networks:
       - my-network
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSOWRD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DATABASE}
-      MYSQL_USER: ${DB_USER}
 
 networks:
   my-network:
