@@ -2,8 +2,6 @@ version: '3.8'  # Adicionando a versão do Docker Compose
 
 services:
   backend:
-    networks:
-      - my-network
     build: .
     ports:
       - "3000:3000"
@@ -14,17 +12,3 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DATABASE: ${DATABASE}
       TOKEN_JWT: ${TOKEN_JWT}
-
-  mysql:
-    image: mysql:8
-    ports:
-      - "5000:3306"
-    networks:
-      - my-network
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DATABASE}
-
-networks:
-  my-network:
